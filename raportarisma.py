@@ -3,7 +3,6 @@ import ezdxf
 import pandas as pd
 
 
-
 def help():
     print("Text file format:  id,x,y,H")
     print("e.g:\n1,500650.590,4204238.460,351.234\n2,500650.920,4204252.530,350.582")
@@ -19,20 +18,21 @@ def raportarisma(input_filename, layer_name):
 
         msp.add_blockref(blockname, (df['x'], df['y']), dxfattribs= {"layer": layer_name})
         p = block.add_point((df['x'], df['y']), dxfattribs= {"layer": layer_name})
-
+        # p.virtual_entities(pdsize= 1, pdmode = 35)
 
         block.add_text(df['id'], dxfattribs= {
             "layer": layer_name + "_id",
-            "style": "LiberationSerif",
+            "style": "Arial",
             "height": 0.3 }).set_pos((df['x'] + 0.1, df['y'] + 0.17), align= "LEFT")
 
         block.add_text(df['h'], dxfattribs= {
             "layer": layer_name + "_height",
-            "style": "LiberationSerif",
+            "style": "Arial",
             "height": 0.3 }).set_pos((df['x'] + 0.1, df['y'] - 0.17), align= "LEFT")
 
 
-    doc = ezdxf.new(dxfversion= "R2010", setup= True)    
+    doc = ezdxf.new(dxfversion= "R2010")    
+    doc.styles.new("Arial", dxfattribs={"font": "arial.ttf"})
     doc.header['$PDSIZE'] = -1
     doc.header['$PDMODE'] = 33 # circle 2 for cross
 
@@ -64,4 +64,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-    
